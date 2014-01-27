@@ -16,10 +16,10 @@
 
 module.exports = (robot) ->
 
-  robot.respond /\!m (\w+)/i, (msg) ->
+  robot.hear /\!m (\w+)/i, (msg) ->
     user = msg.match[1]
 
     msg.send "You're doing good work, " + user + "!"
 
-  robot.respond /\!m \*/i, (msg) ->
+  robot.hear /\!m \*/i, (msg) ->
     msg.send "You're doing good work, " + msg.room + "!"
