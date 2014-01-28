@@ -27,5 +27,5 @@ module.exports = (robot) ->
         balance = address.final_balance
 
         msg.send "The address #{address.address} has received #{num_tx}" +
-          " transactions totaling #{total/10000000} and has currently has" +
-          " #{balance/10000000} BTC."
+          " transactions totaling #{total/100000000} and has currently has" +
+          " #{balance/100000000} BTC."
