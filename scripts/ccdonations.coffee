@@ -33,7 +33,8 @@ module.exports = (robot) ->
     robot.http('http://dogechain.info/chain/Dogecoin/q/addressbalance/'+default_address)
       .get() (err, res, body) ->
         balance = body
-        msg.send "The address #{default_address} has a balance of #{balance} DOGE"
+        msg.send "#{default_address} has #{balance} DOGE. Such balance. "+
+          "Very generosity. So wow."
 
   robot.respond /litecoin balance/i, (msg) ->
     default_address = 'LMMQQNHT172pK6Ys9u64fFbodHtHGWJHBX'
