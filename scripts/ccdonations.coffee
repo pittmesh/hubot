@@ -22,10 +22,27 @@ module.exports = (robot) ->
       })
       .get() (err, res, body) ->
         address = JSON.parse(body)
-        num_tx = address.n_tx
         total = address.total_received
         balance = address.final_balance
 
-        msg.send "The address #{address.address} has received #{num_tx}" +
-          " transactions totaling #{total/100000000} BTC and has currently has" +
+        msg.send "The address #{address.address} has received " +
+          "#{total/100000000} BTC total and currently has" +
           " #{balance/100000000} BTC."
+  robot.respond /dogecoin balance/i, (msg) ->
+    default_address = 'DMMx3mSt5swBqQZEwtw3haYmMoLwmSP3zj'
+    robot.http('http://dogechain.info/chain/Dogecoin/q/addressbalance/'+default_address)
+      .get() (err, res, body) ->
+        balance = body
+        msg.send "The address #{default_address} has a balance of #{balance} DOGE"
+
+  robot.respond /litecoin balance/i, (msg) ->
+    default_address = 'LMMQQNHT172pK6Ys9u64fFbodHtHGWJHBX'
+    robot.http('https://ltc.blockr.io/api/v1/address/info/'+default_address)
+      .get() (err, res, body) ->
+        address = JSON.parse(body).data
+        total = address.totalreceived
+        balance = addressbalance
+
+        msg.send "The address #{address.address} has received #{total} LTC total"+
+          "and currently has #{balance} LTC."
+        
