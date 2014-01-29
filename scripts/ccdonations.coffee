@@ -42,7 +42,7 @@ module.exports = (robot) ->
       .get() (err, res, body) ->
         address = JSON.parse(body).data
         total = address.totalreceived
-        balance = addressbalance
+        balance = address.balance
 
         msg.send "The address #{address.address} has received #{total} LTC total"+
           "and currently has #{balance} LTC."
