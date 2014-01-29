@@ -45,5 +45,5 @@ module.exports = (robot) ->
         balance = address.balance
 
         msg.send "The address #{address.address} has received #{total} LTC total"+
-          "and currently has #{balance} LTC."
+          " and currently has #{balance} LTC."
         
