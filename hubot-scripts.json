@@ -14,4 +14,5 @@
 "trello.coffee",
 "mongolab-brain.coffee",
 "complete.coffee",
-"urban.coffee"]
+"urban.coffee",
+"countdown.coffee"]
