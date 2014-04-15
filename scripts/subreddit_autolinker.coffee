@@ -15,5 +15,5 @@
 
 module.exports = (robot) ->
 
-  robot.hear /\/r\/([A-Za-z0-9]*)/i, (msg) ->
-    msg.send "https://pay.reddit.com/r/#{msg.match[1]}"
+  robot.hear /\/r\/([A-Za-z0-9\_]*)/i, (msg) ->
+    msg.send "https://pay.reddit.com/r/#{msg.match[1]}" if !msg.match[1].length > 0
