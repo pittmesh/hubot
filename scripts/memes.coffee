@@ -15,7 +15,7 @@
 
 module.exports = (robot) ->
   
-  SECONDS = 60*1000
+  SECONDS = 1000
 
   robot.hear /prawns/i, (msg) ->
     msg.send "fookin' prawns!"
