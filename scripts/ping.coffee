@@ -19,5 +19,10 @@ module.exports = (robot) ->
 
   robot.respond /DIE$/i, (msg) ->
     msg.send "Goodbye, cruel world."
-    process.exit 0
+    if msg.message.user == "rhettigan"
+      process.exit 0
+    else
+      setTimeout () ->
+        msg.send "Nah, " + msg.message.user + " isn't the boss of me."
+      , 2 * SECONDS
 
