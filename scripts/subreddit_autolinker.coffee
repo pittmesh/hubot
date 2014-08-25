@@ -21,7 +21,7 @@ module.exports = (robot) ->
     hostname = msg.match[2] + msg.match[3]
     path = msg.match[4]
 
-    if scheme == "http://" && hostname.indexOf "reddit.com"
+    if scheme == "http://" && hostname.indexOf "reddit.com" > -1
       msg.send "Secure link: https://pay.reddit.com" + path
 
   robot.hear /\ \/r\/([A-Za-z0-9\_]*)[\ ]?/i, (msg) ->
