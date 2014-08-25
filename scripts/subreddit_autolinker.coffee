@@ -15,7 +15,7 @@
 
 module.exports = (robot) ->
 
-  robot.hear /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/, (msg) ->
+  robot.hear /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/, (msg) ->
     # matched a URL, see if it's http AND reddit
     scheme = msg.match[1]
     hostname = msg.match[2] + msg.match[3]
