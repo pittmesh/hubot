@@ -56,8 +56,8 @@ module.exports = (robot) ->
 
          for thing, selector of selectors
            data = Select handler.dom, selector
-           if data[0]? and data[0].children?
-             value = data[0].children.map(flatten).join(" ")
+           if data[0]?
+             value = flatten(data[0])
            else
              value = ''
            results[thing] = value unless value == ''
