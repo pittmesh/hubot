@@ -10,12 +10,12 @@ Util = require "util"
 
 module.exports = (robot) ->
   robot.respond /show storage$/i, (msg) ->
-    return if msg.message.user != process.env.ADMIN_USER
+    return if msg.message.user != process.env.HUBOT_ADMIN_USER
     output = Util.inspect(robot.brain.data, false, 4)
     msg.send output
 
   robot.respond /show users$/i, (msg) ->
-    return if msg.message.user != process.env.ADMIN_USER
+    return if msg.message.user != process.env.HUBOT_ADMIN_USER
     response = ""
 
     for own key, user of robot.brain.data.users
