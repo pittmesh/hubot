@@ -23,27 +23,43 @@ module.exports = (robot) ->
   selectors = {
     'Download': base_selector + " div.share-major div.share-download p",
     'Upload': base_selector + " div.share-major div.share-upload p",
-    'Ping': base_selector + " div.share-info share-ping p",
-    'Rating': base_selector + " div.share-info share-rating p",
-    'Device': base_selector + " div.share-info share-device p",
-    'ISP': base_selector + " div.share-info share-isp p",
-    'Server': base_selector + " div.share-info share-server p",
-    'Timestamp': base_selector + " div.share-meta share-meta-date"
+    'Ping': base_selector + " div.share-info div.share-ping p",
+    'Rating': base_selector + " div.share-info div.share-rating p",
+    'Device': base_selector + " div.share-info div.share-device p",
+    'ISP': base_selector + " div.share-info div.share-isp p",
+    'Server': base_selector + " div.share-info div.share-server p",
+    'Timestamp': base_selector + " div.share-meta div.share-meta-date"
   }
 
+  base_url = "http://www.speedtest.net/my-result/"
 
-  robot.hear /http\:\/\/www\.speedtest\.net\/my-result\/\d*/, (msg) ->
-    console.log("getting " + msg.match)
-    robot.http(msg.match)
-    #robot.http("http://cad.cx")
+  flatten = (item) ->
+    if item.children?
+      item.children.map(flatten).join(" ")
+    else
+      item.raw.trim()
+
+#http://www.speedtest.net/my-result/3760429995
+
+  robot.hear /http\:\/\/www\.speedtest\.net\/my-result\/(\d*)/, (msg) ->
+    url = base_url + msg.match[1]
+    robot.http(url)
        .header('User-Agent', 'Mozilla/5.0')
        .get() (err, res, body) ->
-         console.log(err) if err
          handler = new HTMLParser.DefaultHandler((() ->),
             ignoreWhitespace: true
          )
          parser = new HTMLParser.Parser handler
          parser.parseComplete body
 
+         results = {}
+
          for thing, selector of selectors
-           msg.send Select handler.dom, selector
+           data = Select handler.dom, selector
+           if data[0]? and data[0].children?
+             value = data[0].children.map(flatten).join(" ")
+           else
+             value = ''
+           results[thing] = value unless value == ''
+
+         msg.send "⬇︎ #{results['Download']} ⬆︎ #{results['Upload']} ↻ #{results['Ping']} ⬈ #{results['ISP']} on #{results['Timestamp']}"
