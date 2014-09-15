@@ -20,18 +20,18 @@ HTMLParser = require "htmlparser"
 module.exports = (robot) ->
 
   base_selector = "#content div.share-body div.share-main div.share-metrics"
+  major_selector = base_selector + " div.share-major"
+  info_selector = base_selector + " div.share-info"
   selectors = {
-    'Download': base_selector + " div.share-major div.share-download p",
-    'Upload': base_selector + " div.share-major div.share-upload p",
-    'Ping': base_selector + " div.share-info div.share-ping p",
-    'Rating': base_selector + " div.share-info div.share-rating p",
-    'Device': base_selector + " div.share-info div.share-device p",
-    'ISP': base_selector + " div.share-info div.share-isp p",
-    'Server': base_selector + " div.share-info div.share-server p",
+    'Download': major_selector + " div.share-download p",
+    'Upload': major_selector + " div.share-upload p",
+    'Ping': info_selector + " div.share-ping p",
+    'Rating': info_selector + " div.share-rating p",
+    'Device': info_selector + " div.share-device p",
+    'ISP': info_selector + " div.share-isp p",
+    'Server': info_selector + " div.share-server p",
     'Timestamp': base_selector + " div.share-meta div.share-meta-date"
   }
-
-  base_url = "http://www.speedtest.net/my-result/"
 
   flatten = (item) ->
     if item.children?
@@ -39,11 +39,13 @@ module.exports = (robot) ->
     else
       item.raw.trim()
 
-#http://www.speedtest.net/my-result/3760429995
+  # use this for testing:
+  #    http://www.speedtest.net/my-result/3760429995
+  # should output:
+  #    ⬇︎ 150.44 Mb/s ⬆︎ 73.16 Mb/s ↻ 19 ms ⬈ VERIZON FIOS on 9/15/2014 at 12:50 AM GMT
 
   robot.hear /http\:\/\/www\.speedtest\.net\/my-result\/(\d*)/, (msg) ->
-    url = base_url + msg.match[1]
-    robot.http(url)
+    robot.http("http://www.speedtest.net/my-result/#{msg.match[1]}")
        .header('User-Agent', 'Mozilla/5.0')
        .get() (err, res, body) ->
          handler = new HTMLParser.DefaultHandler((() ->),
