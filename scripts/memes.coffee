@@ -28,3 +28,12 @@ module.exports = (robot) ->
     setTimeout () -> 
       msg.send "And do the Harlem Shake"
     , 14 * SECONDS
+
+  robot.respond /who is your master/i, (msg) ->
+    if msg.message.user != process.env.HUBOT_ADMIN_USER
+      whoverb = "#{process.env.HUBOT_ADMIN_USER} is"
+    else if msg.message.user == process.env.HUBOT_ADMIN_USER
+      whoverb = "You are"
+    else
+      whoverb = "No one is"
+    msg.send "#{whoverb} my master, #{msg.message.user}."
