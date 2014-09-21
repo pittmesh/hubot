@@ -44,7 +44,7 @@ module.exports = (robot) ->
   # should output:
   #    ⬇︎ 150.44 Mb/s ⬆︎ 73.16 Mb/s ↻ 19 ms ⬈ VERIZON FIOS on 9/15/2014 at 12:50 AM GMT
 
-  robot.hear /http\:\/\/www\.speedtest\.net\/my-result\/(\d*)/, (msg) ->
+  robot.hear /http\:\/\/www\.speedtest\.net\/my-result\/(\S*)/, (msg) ->
     robot.http("http://www.speedtest.net/my-result/#{msg.match[1]}")
        .header('User-Agent', 'Mozilla/5.0')
        .get() (err, res, body) ->
