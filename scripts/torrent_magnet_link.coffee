@@ -26,7 +26,7 @@ magnetUrlForData = (data) ->
     name = "dn="+encodeURIComponent(data.name)
   if data.info? and data.info.length?
     length = "xl=" + data.info.length
-  "magnet:?xt=urn:btih:#{infohash}&#{trackers.toString('&')}&#{name}&#{length}"
+  "magnet:?xt=urn:btih:#{infohash}&#{trackers.join('&')}&#{name}&#{length}"
 
 
 module.exports = (robot) ->
