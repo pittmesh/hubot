@@ -30,7 +30,8 @@
     "xml2js": "0.1.14",
     "validator" : "0.4.20",
     "mongodb": "*",
-    "node-trello": "*"
+    "node-trello": "*",
+    "parse-torrent":"2.1.2"
   },
   "engines": {
     "node": ">= 0.8.x",
