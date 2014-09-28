@@ -1,1 +1,1 @@
-web: bin/hubot -a irc -n metamesh
+hubot: bin/hubot -a irc -n metamesh
