@@ -31,7 +31,8 @@
     "validator" : "0.4.20",
     "mongodb": "*",
     "node-trello": "*",
-    "parse-torrent":"2.1.2"
+    "parse-torrent":"2.1.2",
+    "twit": "1.1.18"
   },
   "engines": {
     "node": ">= 0.8.x",
