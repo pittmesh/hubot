@@ -41,9 +41,7 @@ module.exports = function(robot) {
       if(data[0]) {
         robot.brain.data.twitter_since_id = data[0].id_str;
       }
-      data.forEach(function(tweet) {
-        msg.send(TwitterMentions.format_tweet(tweet));
-      });
+      TwitterMentions.display_tweets(msg, data);
     });
   }, 1000 * 60 * 5);
 
