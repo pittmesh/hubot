@@ -17,18 +17,12 @@
 //   Jon Daniel
 //
 module.exports = function(robot) {
-  if(!TwitterMentions.check_configuration_sanity(robot.logger)) {
-    return
-  }
-  
-  var twit = TwitterMentions.setup({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY, 
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    access_token: process.env.TWITTER_ACCESS_TOKEN,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-  });
-
-  setInterval(function() {
+  var store_since_id = function(tweets) {
+    if(tweets[0]) {
+      robot.brain.data.twitter_since_id = tweets[0].id_str;
+    }
+  };
+  var interval_callback = function() {
     var params = {count: 3};
     var msg = new robot.Response(robot, '');
 
@@ -36,19 +30,29 @@ module.exports = function(robot) {
       params.since_id = robot.brain.data.twitter_since_id; 
     }
 
-    twit.get('statuses/mentions_timeline', params, function(err, data, response) {
-      data = typeof data !== 'undefined' ? data : [];
-      if(data[0]) {
-        robot.brain.data.twitter_since_id = data[0].id_str;
-      }
-      TwitterMentions.display_tweets(msg, data);
-    });
-  }, 1000 * 60 * 5);
+    TwitterMentions.recent_mentions(params, function(tweets) {
+      store_since_id(tweets);
+      TwitterMentions.display_tweets(msg, tweets);
+    });    
+  };
+
+  if(!TwitterMentions.check_configuration_sanity(robot.logger)) {
+    return
+  }
+  
+  TwitterMentions.setup({
+    consumer_key: process.env.TWITTER_CONSUMER_KEY, 
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    access_token: process.env.TWITTER_ACCESS_TOKEN,
+    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+  });
+
+  setInterval(interval_callback, 1000 * 60);
 
   robot.respond(/(show twitter mentions)/i, function(msg) {
     var params = {count: 3};
-    twit.get('statuses/mentions_timeline', params, function(err, data, response) {
-      TwitterMentions.display_tweets(msg, data);
+    TwitterMentions.recent_mentions(params, function(tweets) {
+      TwitterMentions.display_tweets(msg, tweets);
     });
   });
 }
@@ -59,13 +63,19 @@ var TwitterMentions = {
 
   setup : function(config) {
     this.twit = new Twit(config);
-    return this.twit; 
   },
 
   display_tweets : function(msg, tweets) {
     tweets = typeof tweets !== 'undefined' ? tweets : [];
     tweets.forEach(function(tweet) {
       msg.send(TwitterMentions.format_tweet(tweet));
+    });
+  },
+
+  recent_mentions : function(params, callback) {
+    this.twit.get('statuses/mentions_timeline', params, function(err, data, response) {
+      data = typeof data !== 'undefined' ? data : [];
+      callback(data);
     });
   },
 
