@@ -1,7 +1,7 @@
 # Description:
 #   Retrieves a Bitcoin address's balance with some donation information.
 #
-# Dependencies: 
+# Dependencies:
 #   None
 #
 # Commands:
@@ -14,8 +14,24 @@
 #   colindean
 #
 module.exports = (robot) ->
-  robot.respond /bitcoin balance/i, (msg) ->
-    default_address = '1meshQDzpXUQJSdNVH7BujkudqfatFxnq'
+
+  log_message = (key) ->
+    return "CCDonations: Set " + key + " environment variable!"
+
+  if !process.env.CC_ADDRESS_BITCOIN
+    robot.logger.warning log_message("CC_ADDRESS_BITCOIN")
+
+
+  if !process.env.CC_ADDRESS_LITECOIN
+    robot.logger.warning log_message("CC_ADDRESS_LITECOIN")
+
+
+  if !process.env.CC_ADDRESS_DOGECOIN
+    robot.logger.warning log_message("CC_ADDRESS_DOGECOIN")
+
+
+  bitcoin_balance = (msg) ->
+    default_address = process.env.CC_ADDRESS_BITCOIN
     robot.http("http://blockchain.info/address/" + default_address)
       .query({
         format: 'json'
@@ -28,16 +44,17 @@ module.exports = (robot) ->
         msg.send "The address #{address.address} has received " +
           "#{total/100000000} BTC total and currently has" +
           " #{balance/100000000} BTC."
-  robot.respond /dogecoin balance/i, (msg) ->
-    default_address = 'DMMx3mSt5swBqQZEwtw3haYmMoLwmSP3zj'
+
+  dogecoin_balance = (msg) ->
+    default_address = process.env.CC_ADDRESS_DOGECOIN
     robot.http('http://dogechain.info/chain/Dogecoin/q/addressbalance/'+default_address)
       .get() (err, res, body) ->
         balance = body
         msg.send "#{default_address} has #{balance} DOGE. Such balance. "+
           "Very generosity. So wow."
 
-  robot.respond /litecoin balance/i, (msg) ->
-    default_address = 'LMMQQNHT172pK6Ys9u64fFbodHtHGWJHBX'
+  litecoin_balance = (msg) ->
+    default_address = process.env.CC_ADDRESS_LITECOIN
     robot.http('https://ltc.blockr.io/api/v1/address/info/'+default_address)
       .get() (err, res, body) ->
         address = JSON.parse(body).data
@@ -46,4 +63,13 @@ module.exports = (robot) ->
 
         msg.send "The address #{address.address} has received #{total} LTC total"+
           " and currently has #{balance} LTC."
-        
+
+  robot.respond /bitcoin balance/i, (msg) ->
+    bitcoin_balance(msg)
+  robot.respond /dogecoin balance/i, (msg) ->
+    dogecoin_balance(msg)
+  robot.respond /litecoin balance/i, (msg) ->
+    litecoin_balance(msg)
+  robot.respond /crypto balances/i, (msg) ->
+    for f in [bitcoin_balance, dogecoin_balance, litecoin_balance]
+      f(msg)
