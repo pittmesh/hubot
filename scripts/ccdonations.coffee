@@ -49,7 +49,8 @@ module.exports = (robot) ->
     default_address = process.env.CC_ADDRESS_DOGECOIN
     robot.http('http://dogechain.info/chain/Dogecoin/q/addressbalance/'+default_address)
       .get() (err, res, body) ->
-        balance = body
+        # at some point, they added this stupid random html comment
+        balance = body.substring(0,body.indexOf('<!--'))
         msg.send "#{default_address} has #{balance} DOGE. Such balance. "+
           "Very generosity. So wow."
 
