@@ -37,6 +37,7 @@ module.exports = (robot) ->
         format: 'json'
       })
       .get() (err, res, body) ->
+        robot.logger.warning(err) if err
         address = JSON.parse(body)
         total = address.total_received
         balance = address.final_balance
