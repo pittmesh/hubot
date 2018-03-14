@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.7.1
+version: v1.10.2
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -39,3 +39,26 @@ patch:
         patched: '2017-09-22T18:38:54.453Z'
     - hubot > express > connect > serve-index > accepts > negotiator:
         patched: '2017-09-22T18:38:54.453Z'
+  'npm:debug:20170905':
+    - hubot > express > connect > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > connect > body-parser > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > connect > compression > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > connect > connect-timeout > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > send > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > connect > express-session > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > connect > finalhandler > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > connect > morgan > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > connect > serve-index > debug:
+        patched: '2018-03-14T12:52:21.443Z'
+    - hubot > express > connect > serve-static > send > debug:
+        patched: '2018-03-14T12:52:21.443Z'
