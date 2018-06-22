@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.10.2
+version: v1.12.0
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -62,3 +62,12 @@ patch:
         patched: '2018-03-14T12:52:21.443Z'
     - hubot > express > connect > serve-static > send > debug:
         patched: '2018-03-14T12:52:21.443Z'
+  'npm:hoek:20180212':
+    - soupselect > nodeunit > tap > coveralls > request > hawk > hoek:
+        patched: '2018-06-21T08:32:14.714Z'
+    - soupselect > nodeunit > tap > coveralls > request > hawk > boom > hoek:
+        patched: '2018-06-21T08:32:14.714Z'
+    - soupselect > nodeunit > tap > coveralls > request > hawk > sntp > hoek:
+        patched: '2018-06-21T08:32:14.714Z'
+    - soupselect > nodeunit > tap > coveralls > request > hawk > cryptiles > boom > hoek:
+        patched: '2018-06-21T08:32:14.714Z'
